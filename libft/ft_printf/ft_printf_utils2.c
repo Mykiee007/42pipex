@@ -33,9 +33,7 @@ int	ft_puthexupper(unsigned int a)
 
 	hex = "0123456789ABCDEF";
 	count = 0;
-	if (a < 0)
-		a = -a;
-	else if (a >= 16)
+	if (a >= 16)
 		count += ft_puthexupper(a / 16);
 	count += ft_putchar (hex[a % 16]);
 	return (count);

@@ -59,9 +59,7 @@ int	ft_putunsigned(unsigned int a)
 	int	count;
 
 	count = 0;
-	if (a < 0)
-		a = -a;
-	else if (a > 9)
+	if (a > 9)
 		count += ft_putunsigned(a / 10);
 	count += ft_putchar ((a % 10) + '0');
 	return (count);
