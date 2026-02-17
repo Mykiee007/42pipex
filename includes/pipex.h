@@ -13,6 +13,10 @@
 #ifndef PIPEX_H
 # define PIPEX_H
 
+# include "/libft/includes/libft.h"
+# include "/libft/includes/printf.h"
 
+void    check(int i);
+int     main(int argc, char **argv);
 
 #endif
