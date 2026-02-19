@@ -6,7 +6,7 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:00:39 by mvelasqu          #+#    #+#             */
-/*   Updated: 2026/02/19 10:11:58 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/02/19 11:33:04 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 
 # include "libft.h"
 # include "ft_printf.h"
+# include <errno.h>
+# include <stdio.h>
+# include <string.h>
+# include <unistd.h>
+# include <stdlib.h>
+
 
 void    check(int i);
 int     main(int argc, char **argv);
