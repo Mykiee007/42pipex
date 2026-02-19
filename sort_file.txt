@@ -1,0 +1,22 @@
+total 48
+-rwxr-xr-x 1 mvelasqu 2025_singapore 16168 Feb 13 13:20 a.out
+-rw-r--r-- 1 mvelasqu 2025_singapore   934 Feb 11 16:02 pipex.h
+-rw-r--r-- 1 mvelasqu 2025_singapore   892 Feb 11 16:03 Makefile
+-rw-r--r-- 1 mvelasqu 2025_singapore    79 Feb 13 14:24 file.txt
+-rw-r--r-- 1 mvelasqu 2025_singapore     2 Feb 12 11:42 outfile
+-rw-r--r-- 1 mvelasqu 2025_singapore    17 Feb 13 14:11 monitoring.sh
+-rw-r--r-- 1 mvelasqu 2025_singapore    16 Feb 13 13:20 infile
+-rw-r--r-- 1 mvelasqu 2025_singapore  1614 Feb 13 11:30 README.md
+-rw-r--r-- 1 mvelasqu 2025_singapore  1365 Feb 13 13:21 pipex.c
+README.md
+pipex.h
+pipex.c
+outfile
+monitoring.sh
+Makefile
+infile
+file.txt
+drwxr-xr-x 8 mvelasqu 2025_singapore   166 Feb 13 09:53 .git
+drwxr-xr-x 4 mvelasqu 2025_singapore    34 Feb 11 16:07 ..
+drwxr-xr-x 3 mvelasqu 2025_singapore   160 Feb 13 14:24 .
+a.out
