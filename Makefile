@@ -10,3 +10,44 @@
 #                                                                              #
 # **************************************************************************** #
 
+#Description
+
+NAME		= pipex
+CC			= gcc
+CFLAGS		= -Wall -Wextra -Werror
+RM			= rm -f
+
+LIBDIR		= libft
+LIBFLAGS	= $(LIBDIR)/libft.a
+
+INCDIR		= includes
+INCFLAGS	= -I$(INCDIR) -I$(LIBDIR)/includes
+
+SRCS		= main.c \
+				src_pipex/pipex_utls_1.c
+OBJS		= $(SRCS:.c=.o)
+
+#Commands
+all: $(NAME)
+
+$(NAME): $(LIBFLAGS) $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFLAGS) -o $(NAME)
+
+$(LIBFLAGS):
+	$(MAKE) -C $(LIBDIR)
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCFLAGS) -c $< -o $@
+
+clean:
+	$(RM) $(OBJS)
+	$(MAKE) -C $(LIBDIR) clean
+
+fclean:
+	$(RM) $(NAME) $(OBJS)
+	$(MAKE) -C $(LIBDIR) fclean
+
+re:
+	fclean all
+
+phony: all fclean clean re

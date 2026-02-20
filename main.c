@@ -36,7 +36,6 @@ int main(int argc, char **argv)
         ft_printf("The statement: %s\n", argv[i]);
         check(i);
         i--;
-    }
-    return (0);
+    }   
     return (0);
 }
