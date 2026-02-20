@@ -14,28 +14,29 @@
 
 int main(int argc, char **argv)
 {
-	int i;
-	int fd = access(argv[1], (W_OK | R_OK) & X_OK);
+	int fd = open(argv[1], O_RDWR)
+	int fd[1];
 
-    if (argc != 5)
-    {
-		ft_printf("please give 4 arguments");
-	   return (0);
-	}
-	if (fd == -1)
-	{
-		perror("error in Perror");
-		ft_printf("%s\n",strerror(errno));
-		ft_printf("Error Numbers: %d\n", errno);
-	}
-	else
-		ft_printf("no error\n");
-    i = argc;
-    while (i >= 0)
-    {
-        ft_printf("The statement: %s\n", argv[i]);
-        check(i);
-        i--;
-    }   
+	
+
+
+
     return (0);
 }
+/*
+Strategy
+	Open infile
+	Create pipe
+	fork
+		child 1:
+		redirect infile → stdin
+		redirect pipe write → stdout
+		execve cmd1
+	parent:
+		fork again
+			child 2:
+				redirect pipe read → stdin
+				redirect outfile → stdout
+				execve cmd2
+	wait for children
+*/
