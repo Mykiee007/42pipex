@@ -6,7 +6,7 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:00:39 by mvelasqu          #+#    #+#             */
-/*   Updated: 2026/02/19 11:33:04 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/02/24 15:09:47 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <string.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <sys/wait.h>
 
 
 void    check(int i);
