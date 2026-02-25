@@ -5,7 +5,7 @@ int main(int argc, char **argv)
 	int fd[2];
 	int i;
 	int in_fd = open(argv[1],O_RDONLY);
-	int out_fd = (open(argv[argc],O_RDWR) == -1);
+	int out_fd = open(argv[argc],O_RDWR);
 
 	if (access(argv[1], R_OK & W_OK) == -1) {
 		printf("Error access infile: %s\n", strerror(errno));
