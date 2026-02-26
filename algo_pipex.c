@@ -22,6 +22,7 @@ char *get_exec_path(char *cmd, char *path)
 		if (access(full_path, X_OK) == 0)
 		{
 			free_split(paths);
+			ft_printf("error in access to path");
 			return full_path;
 		}
 		free(full_path);
@@ -33,8 +34,12 @@ char *get_exec_path(char *cmd, char *path)
 
 int algo_pipex(int argc, char **argv, char **envp)
 {
+	int status;
     int fd[2];
-    pipe(fd);
+    if( pipe(fd) == -1) {
+		ft_printf("Error creating pipe\n");
+		return 1;
+	}
 	int infile = open("infile", O_RDONLY);
 	int outfile = open("outfile", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	char **cmd1_args = ft_split(argv[2], ' ');
@@ -47,7 +52,8 @@ int algo_pipex(int argc, char **argv, char **envp)
 		printf("Usage: %s infile cmd1 cmd2 outfile\n", argv[0]);
 		return 1;
 	}
-    if (fork() == 0)
+	int pid1 = fork();
+    if (pid1 == 0)
     {
 		dup2(infile, STDIN_FILENO);
 		dup2(fd[1], STDOUT_FILENO);
@@ -55,9 +61,10 @@ int algo_pipex(int argc, char **argv, char **envp)
         close(fd[1]);
 
 		execve(exec_path1, cmd1_args, envp);
-    }
 
-    if (fork() == 0)
+    }
+	int pid2 = fork();
+    if (pid2 == 0)
     {
 		dup2(fd[0], STDIN_FILENO);
 		dup2(fd[1], STDOUT_FILENO);
@@ -73,7 +80,7 @@ int algo_pipex(int argc, char **argv, char **envp)
 	close(infile);
 	close(outfile);
 
-    wait(NULL);
-    wait(NULL);
+    waitpid(pid1, &status, 0);
+    waitpid(pid2, &status, 0);
 	return 1;
 }
