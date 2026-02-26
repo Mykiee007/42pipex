@@ -6,7 +6,7 @@
 #    By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/11 16:03:18 by mvelasqu          #+#    #+#              #
-#    Updated: 2026/02/24 15:09:24 by mvelasqu         ###   ########.fr        #
+#    Updated: 2026/02/26 14:25:28 by mvelasqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ INCDIR		= includes
 INCFLAGS	= -I$(INCDIR) -I$(LIBDIR)/includes
 
 SRCS		= main.c \
-				src_pipex/pipex_utls_1.c
+				src_pipex/pipex_utls_1.c \
+				algo_pipex.c
 OBJS		= $(SRCS:.c=.o)
 
 #Commands

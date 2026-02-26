@@ -37,6 +37,13 @@ First encounters with these functions
 | pipe | int pipe(int pipefd[2]) | This connects two process. its a unidirectional data channel that can be used for interprocess communication.  The array pipefd is used to return two file descriptors referring to the ends of the pipe. pipefd[0] refers to the read end of the pipe.  pipefd[1] refers to the write end of the pipe.  Data written to the write end of the pipe is buffered by the kernel until it is read from the read end of the pipe. | <unistd.h> |
 | execve | int execve(const char *path/filename, char *const argv[], char *const envp[]) | this function loads a new program into a process memory. The exisiting process is discarded. The newly process gets all the new stak data & heap. since it replaces the process's memory, the return value is always -1. | <unistd.h> |
 
+### Other Notes
+
+| ITEM | DESCRIPTION | LIBRARY |
+| :--- | :--- | :-- |
+| STDIN_FILENO | a standard symbolice constant that signifies standard input or 0 | <unistd.h> |
+| STDOUT_FILENE | a symbolic constant that signifies standard output or 1 | <unistd.h>|
+
 # Instruction
 
 Compile the program using make, you will have an executable program:

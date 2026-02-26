@@ -6,22 +6,42 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 16:10:09 by mvelasqu          #+#    #+#             */
-/*   Updated: 2026/02/24 14:18:49 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/02/26 14:48:20 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int main(int argc, char **argv)
-{
-/*
-check arguments filein cmd1...cmdn fileout
-read from filein, remeber to check
-call a pipe(fd), remember for check
-	while( cmd_n > 0)
-		cmd1 split
-*/
 
+char *get_path(char **envp)
+{
+	
+	int i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			return envp[i] + 5; // skip "PATH="
+		i++;
+	}
+	return NULL; // PATH not found
+}
+
+int main(int argc, char **argv, char **envp)
+{
+	char *path = get_path(envp);
+	if (path) {
+		ft_printf("PATH: %s\n", path);
+	} else {
+		ft_printf("PATH not found in environment variables.\n");
+		return 1;
+	}
+	if (argc != 5) {
+		ft_printf("Usage: %s infile cmd1 cmd2 outfile\n", argv[0]);
+		return 1;
+	}
+	
+	algo_pipex(argc, argv, envp);
+	return 0;
 }
 
 

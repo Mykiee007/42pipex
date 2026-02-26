@@ -6,7 +6,7 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 09:56:57 by mvelasqu          #+#    #+#             */
-/*   Updated: 2025/12/22 11:01:01 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/02/26 14:34:52 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <unistd.h>
+# include "libft.h"	
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 4

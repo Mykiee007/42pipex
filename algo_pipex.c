@@ -1,84 +1,79 @@
 #include "pipex.h"
 
-int main(int argc, char **argv)
+static void free_split(char **split)
 {
-	int fd[2];
-	int i;
-	int in_fd = open(argv[1],O_RDONLY);
-	int out_fd = (open(argv[argc],O_RDWR) == -1);
-
-	if (access(argv[1], R_OK & W_OK) == -1) {
-		printf("Error access infile: %s\n", strerror(errno));
-		return 3;
-	}
-	if (access(argv[argc], R_OK & W_OK) == -1) {
-		printf("Error access outfile: %s\n", strerror(errno));
-		return 4;
-	}
-	if (in_fd == -1) {
-		printf("Error open infile: %s\n", strerror(errno));
-		return 5;		
-	}
-	if (out_fd == -1) {
-		printf("Error open opening infile: %s\n", strerror(errno));
-		return 6;		
-	}
-	int pid = fork();
-	if (pid == -1) {
-		printf("Error in fork: %s\n",strerror(errno));
-		return 2;
-	}
-	if (argv[2] == "here_doc")
+	int i = 0;
+	while (split[i])
 	{
-		int cmd_n = argc - 4;
-		int cmd_start = 3;
-		int i = cmd_start;
-		char *argvCmd;
-		char *file;
+		free(split[i]);
+		i++;
+	}
+	free(split);
+}
 
-		while (i != (cmd_n - 1))
+char *get_exec_path(char *cmd, char *path)
+{
+	char **paths = ft_split(path, ':');
+	int i = 0;
+	while (paths[i])
+	{
+		char *full_path = ft_strjoin(paths[i], "/");
+		full_path = ft_strjoin(full_path, cmd);
+		if (access(full_path, X_OK) == 0)
 		{
-			if(pipe(fd) == -1){
-				printf("Error in pipe: %s\n",strerror(errno));
-				return 1;
-			}
-			int pid = fork();
-			if (pid == -1) {
-				printf("Error in fork: %s\n",strerror(errno));
-				return 2;
-			}
-			int *tmp = ft_strjoin(argv[i]," ");
-			file = ft_strjoin(tmp,argv[1]);
-			free(tmp);
-			argvCmd = ft_split(file,' ');
-			free(file);
-			cmd = ft_strjoin()
-			if (!cmd) {
-				printf("error in split: %s\n", strerror(errno));
-				return 7;
-			}
-
-			if (pid == 0) {
-				dup2(in_fd,0);
-				if (i != cmd_n)
-					dup2(fd[1],1);
-				else
-					dup2(out_fd, 1);
-				close(in_fd);
-				if (i != (cmd_n -1))
-				{
-					close(fd[0]);
-					close(fd[1]);
-				}
-				close(out_fd);
-				execve(cmd[0],cmd, 0);
-			}
-
+			free_split(paths);
+			return full_path;
 		}
+		free(full_path);
+		i++;
 	}
-	else {
-		int cmd_n = argc - 3;
-		int cmd_start = 2;
+	free_split(paths);
+	return NULL; // command not found in any PATH directory
+}
+
+int algo_pipex(int argc, char **argv, char **envp)
+{
+    int fd[2];
+    pipe(fd);
+	int infile = open("infile", O_RDONLY);
+	int outfile = open("outfile", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	char **cmd1_args = ft_split(argv[2], ' ');
+	char **cmd2_args = ft_split(argv[3], ' ');
+	char *path = get_path(envp);
+	char *exec_path1 = get_exec_path(cmd1_args[0], path);
+	char *exec_path2 = get_exec_path(cmd2_args[0], path);
+	if (argc != 5)
+	{
+		printf("Usage: %s infile cmd1 cmd2 outfile\n", argv[0]);
+		return 1;
 	}
-	return 0;
+    if (fork() == 0)
+    {
+		dup2(infile, STDIN_FILENO);
+		dup2(fd[1], STDOUT_FILENO);
+        close(infile);
+        close(fd[1]);
+
+		execve(exec_path1, cmd1_args, envp);
+    }
+
+    if (fork() == 0)
+    {
+		dup2(fd[0], STDIN_FILENO);
+		dup2(fd[1], STDOUT_FILENO);
+        close(fd[0]);
+        close(outfile);
+
+		execve(exec_path2, cmd2_args, envp);
+    }
+
+    // parent closes pipe
+    close(fd[0]);
+    close(fd[1]);
+	close(infile);
+	close(outfile);
+
+    wait(NULL);
+    wait(NULL);
+	return 1;
 }

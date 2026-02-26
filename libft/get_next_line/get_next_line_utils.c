@@ -6,40 +6,12 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 09:56:28 by mvelasqu          #+#    #+#             */
-/*   Updated: 2025/12/22 10:53:36 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/02/26 14:36:45 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-//#include "libft.h"
-
-size_t	ft_strlen(char const *src)
-{
-	size_t	i;
-
-	i = 0;
-	while (src[i] != '\0')
-		i++;
-	return (i);
-}
-
-char	*ft_strchr(const char *s, int c)
-{
-	int	i;
-
-	if (s == NULL)
-		return (NULL);
-	i = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] == (char)c)
-			return ((char *)&s[i]);
-		i++;
-	}
-	if (s[i] == (char)c)
-		return ((char *)&s[i]);
-	return (0);
-}
+#include "libft.h"
 
 char	*ft_strjoin_gnl(char const *s1, char const *s2)
 {

@@ -6,7 +6,7 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:00:39 by mvelasqu          #+#    #+#             */
-/*   Updated: 2026/02/24 15:09:47 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/02/26 14:28:57 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 
 
 void    check(int i);
-int     main(int argc, char **argv);
+char	*get_path(char **envp);
+int	algo_pipex(int argc, char **argv, char **envp);
+int     main(int argc, char **argv, char **envp);
 
 #endif
