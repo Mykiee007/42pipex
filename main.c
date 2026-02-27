@@ -26,11 +26,24 @@ char *get_path(char **envp)
 	return NULL; // PATH not found
 }
 
+static void in_envp(char **envp)
+{
+	int i = 0;
+
+	while(envp[i])
+	{
+		ft_printf("%s\n", envp[i]);
+		i++;
+	}
+}
+
 int main(int argc, char **argv, char **envp)
 {
 	char *path = get_path(envp);
 	if (path) {
 		ft_printf("PATH: %s\n", path);
+		ft_printf("inside the envp:\n" );
+		in_envp(envp);
 	} else {
 		ft_printf("PATH not found in environment variables.\n");
 		return 1;
@@ -39,8 +52,6 @@ int main(int argc, char **argv, char **envp)
 		ft_printf("Usage: %s infile cmd1 cmd2 outfile\n", argv[0]);
 		return 1;
 	}
-	
-	algo_pipex(argc, argv, envp);
 	return 0;
 }
 
