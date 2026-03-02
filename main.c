@@ -6,7 +6,7 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 16:10:09 by mvelasqu          #+#    #+#             */
-/*   Updated: 2026/02/26 14:48:20 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/03/02 14:56:41 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,81 @@ char *get_path(char **envp)
 	return NULL; // PATH not found
 }
 
+static char *ft_join3(char *str1, char*str2, char *str3)
+{
+	char	*tmp;
+	char	*result;
+
+	if(!str1)
+		str1 = "";
+	if(!str2)
+		str2 = "";
+	if(!str3)
+		str3 = "";
+	tmp = ft_strjoin(str1, str2);
+	if(!tmp)
+		return (NULL);
+	result = ft_strjoin(tmp,str3);
+	free(tmp);
+	return(result);
+}
+
+static char *format_cmd(char *cmd)
+{
+	char **cmd_line;
+	char *formatted_cmd;
+
+	cmd_line = ft_split(cmd, ' ');
+    if (!cmd_line || !cmd_line[0]) {
+		ft_free_split(cmd_line);
+		return (ft_strdup(""));
+	}
+        
+	formatted_cmd = ft_strdup(cmd_line[0]);
+	ft_free_split(cmd_line);
+	return (formatted_cmd);
+}
+
+static char *get_exec_path(char *cmd, char **envp)
+{
+	char	**cmd_line;
+	char	*formatted_cmd;
+	char	*full_cmd;
+	char	*path;
+	int		i;
+
+	if(ft_strchr(cmd,'/')) {
+		if (access(cmd, X_OK) == 0)
+			return (ft_strdup(cmd));
+		return (NULL);
+	}
+	path = get_path(envp);
+	if (!path)
+		return (NULL);
+	cmd_line = ft_split(path, ':');
+	if (!cmd_line)
+		return (NULL);
+	formatted_cmd = format_cmd(cmd);
+	if(!formatted_cmd)
+		return (ft_free_split(cmd_line), NULL);
+	i = 0;
+	while(cmd_line[i] != NULL)
+	{
+		full_cmd = ft_join3(cmd_line[i], "/", formatted_cmd);
+		if(!full_cmd)
+			return(free(formatted_cmd), ft_free_split(cmd_line), NULL);
+		if(access(full_cmd, X_OK) == 0)
+			return(free(formatted_cmd),ft_free_split(cmd_line),full_cmd);
+		free(full_cmd);
+		i++;
+	}
+	free(formatted_cmd);
+	ft_free_split(cmd_line);
+	return (NULL);
+}
+
+// check envp data
+/*
 static void in_envp(char **envp)
 {
 	int i = 0;
@@ -35,25 +110,50 @@ static void in_envp(char **envp)
 		ft_printf("%s\n", envp[i]);
 		i++;
 	}
-}
-
+}*/
 int main(int argc, char **argv, char **envp)
 {
-	char *path = get_path(envp);
+	int fd;
+	char *path = get_exec_path(argv[2], envp);
 	if (path) {
 		ft_printf("PATH: %s\n", path);
 		ft_printf("inside the envp:\n" );
-		in_envp(envp);
 	} else {
 		ft_printf("PATH not found in environment variables.\n");
+		free(path);
+		return 1;
+	}
+	(void)envp;
+	if(argc == 3) {
+		fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		dup2(fd,STDOUT_FILENO);
+		close(fd);
+		write(1,"HELLO\n",6);
+	}
+	return 0;
+}
+
+
+
+/* MAIN MAIN
+int main(int argc, char **argv, char **envp)
+{
+	char *path = get_exec_path(argv[2], envp);
+	if (path) {
+		ft_printf("PATH: %s\n", path);
+		ft_printf("inside the envp:\n" );
+	} else {
+		ft_printf("PATH not found in environment variables.\n");
+		free(path);
 		return 1;
 	}
 	if (argc != 5) {
 		ft_printf("Usage: %s infile cmd1 cmd2 outfile\n", argv[0]);
 		return 1;
 	}
+	free(path);
 	return 0;
-}
+}*/
 
 
 // this talks about communicating with pipes

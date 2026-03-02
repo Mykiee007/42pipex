@@ -6,7 +6,7 @@
 #    By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/20 11:00:37 by mvelasqu          #+#    #+#              #
-#    Updated: 2026/02/26 15:12:39 by mvelasqu         ###   ########.fr        #
+#    Updated: 2026/03/02 13:49:22 by mvelasqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,6 +65,7 @@ SRCS = src/ft_atoi.c \
 		src/ft_lstclear_bonus.c \
 		src/ft_lstiter_bonus.c \
 		src/ft_lstmap_bonus.c \
+		src/ft_free_split.c \
 		ft_printf/ft_printf.c \
 		ft_printf/ft_printf_utils1.c \
 		ft_printf/ft_printf_utils2.c \

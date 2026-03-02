@@ -1,15 +1,6 @@
 #include "pipex.h"
 
-static void free_split(char **split)
-{
-	int i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-}
+
 
 char *get_exec_path(char *cmd, char *path)
 {
@@ -21,14 +12,14 @@ char *get_exec_path(char *cmd, char *path)
 		full_path = ft_strjoin(full_path, cmd);
 		if (access(full_path, X_OK) == 0)
 		{
-			free_split(paths);
+			ft_free_split(paths);
 			ft_printf("error in access to path");
 			return full_path;
 		}
 		free(full_path);
 		i++;
 	}
-	free_split(paths);
+	ft_free_split(paths);
 	return NULL; // command not found in any PATH directory
 }
 
