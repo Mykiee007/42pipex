@@ -6,97 +6,80 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 16:10:09 by mvelasqu          #+#    #+#             */
-/*   Updated: 2026/03/02 14:56:41 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/03/09 13:56:57 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-
-char *get_path(char **envp)
+static int	init_files(t_pipex *px, char **argv)
 {
-	
-	int i = 0;
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			return envp[i] + 5; // skip "PATH="
-		i++;
-	}
-	return NULL; // PATH not found
+	px->infile = open(argv[1], O_RDONLY);
+	if (px->infile < 0)
+		return (-1);
+	px->outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (px->outfile < 0)
+		return (-1);
+	return (0);
 }
 
-static char *ft_join3(char *str1, char*str2, char *str3)
+static int	init_cmds(t_pipex *px, char **argv, char **envp)
 {
-	char	*tmp;
-	char	*result;
-
-	if(!str1)
-		str1 = "";
-	if(!str2)
-		str2 = "";
-	if(!str3)
-		str3 = "";
-	tmp = ft_strjoin(str1, str2);
-	if(!tmp)
-		return (NULL);
-	result = ft_strjoin(tmp,str3);
-	free(tmp);
-	return(result);
+	px->cmd1_args = ft_split(argv[2], ' ');
+	px->cmd2_args = ft_split(argv[3], ' ');
+	if (!px->cmd1_args || !px->cmd2_args)
+		return (-1);
+	px->exec_path1 = get_exec_path(px->cmd1_args[0], envp);
+	px->exec_path2 = get_exec_path(px->cmd2_args[0], envp);
+	if (!px->exec_path1 || !px->exec_path2)
+		return (-1);
+	return (0);
 }
 
-static char *format_cmd(char *cmd)
+static void	child1(t_pipex *px, char **envp)
 {
-	char **cmd_line;
-	char *formatted_cmd;
-
-	cmd_line = ft_split(cmd, ' ');
-    if (!cmd_line || !cmd_line[0]) {
-		ft_free_split(cmd_line);
-		return (ft_strdup(""));
-	}
-        
-	formatted_cmd = ft_strdup(cmd_line[0]);
-	ft_free_split(cmd_line);
-	return (formatted_cmd);
+	dup2(px->infile, STDIN_FILENO);
+	dup2(px->fd[1], STDOUT_FILENO);
+	close(px->fd[0]);
+	close(px->fd[1]);
+	close(px->infile);
+	close(px->outfile);
+	execve(px->exec_path1, px->cmd1_args, envp);
 }
 
-static char *get_exec_path(char *cmd, char **envp)
+static void	child2(t_pipex *px, char **envp)
 {
-	char	**cmd_line;
-	char	*formatted_cmd;
-	char	*full_cmd;
-	char	*path;
-	int		i;
+	dup2(px->fd[0], STDIN_FILENO);
+	dup2(px->outfile, STDOUT_FILENO);
+	close(px->fd[0]);
+	close(px->fd[1]);
+	close(px->infile);
+	close(px->outfile);
+	execve(px->exec_path2, px->cmd2_args, envp);
+}
 
-	if(ft_strchr(cmd,'/')) {
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		return (NULL);
-	}
-	path = get_path(envp);
-	if (!path)
-		return (NULL);
-	cmd_line = ft_split(path, ':');
-	if (!cmd_line)
-		return (NULL);
-	formatted_cmd = format_cmd(cmd);
-	if(!formatted_cmd)
-		return (ft_free_split(cmd_line), NULL);
-	i = 0;
-	while(cmd_line[i] != NULL)
-	{
-		full_cmd = ft_join3(cmd_line[i], "/", formatted_cmd);
-		if(!full_cmd)
-			return(free(formatted_cmd), ft_free_split(cmd_line), NULL);
-		if(access(full_cmd, X_OK) == 0)
-			return(free(formatted_cmd),ft_free_split(cmd_line),full_cmd);
-		free(full_cmd);
-		i++;
-	}
-	free(formatted_cmd);
-	ft_free_split(cmd_line);
-	return (NULL);
+int	main(int argc, char **argv, char **envp)
+{
+	t_pipex	px;
+
+	if (argc != 5)
+		return (1);
+	if (pipe(px.fd) == -1)
+		return (1);
+	if (init_files(&px, argv) == -1)
+		return (1);
+	if (init_cmds(&px, argv, envp) == -1)
+		return (1);
+	px.pid1 = fork();
+	if (px.pid1 == 0)
+		child1(&px, envp);
+	px.pid2 = fork();
+	if (px.pid2 == 0)
+		child2(&px, envp);
+	close_all(&px);
+	waitpid(px.pid1, NULL, 0);
+	waitpid(px.pid2, NULL, 0);
+	return (0);
 }
 
 // check envp data
@@ -111,29 +94,6 @@ static void in_envp(char **envp)
 		i++;
 	}
 }*/
-int main(int argc, char **argv, char **envp)
-{
-	int fd;
-	char *path = get_exec_path(argv[2], envp);
-	if (path) {
-		ft_printf("PATH: %s\n", path);
-		ft_printf("inside the envp:\n" );
-	} else {
-		ft_printf("PATH not found in environment variables.\n");
-		free(path);
-		return 1;
-	}
-	(void)envp;
-	if(argc == 3) {
-		fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		dup2(fd,STDOUT_FILENO);
-		close(fd);
-		write(1,"HELLO\n",6);
-	}
-	return 0;
-}
-
-
 
 /* MAIN MAIN
 int main(int argc, char **argv, char **envp)
@@ -154,7 +114,6 @@ int main(int argc, char **argv, char **envp)
 	free(path);
 	return 0;
 }*/
-
 
 // this talks about communicating with pipes
 /*int main(int argc, char **argv)
@@ -199,7 +158,6 @@ int main(int argc, char **argv, char **envp)
 	return 0;
 }*/
 
-
 // this is similar to pipex method but much simpier
 /*
 int main(int argc, char **argv)
@@ -241,8 +199,6 @@ int main(int argc, char **argv)
 	close(fd[1]);
 	waitpid(pid1,NULL,0);
 	waitpid(pid2,NULL,0);
-
-
 	return 0;
 }
 */
@@ -269,14 +225,12 @@ int main(int argc, char **argv)
 	{
 		start = 0;
 		end = arrSize/2;
-
 	}
 	else
 	{
 		start = arrSize/2;
 		end = arrSize;
 	}
-
 	int sum = 0;
 	int i = start;
 	while(i < end)
