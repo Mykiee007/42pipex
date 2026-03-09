@@ -4,21 +4,27 @@
 
 ### Overiew
 
+Pipex is a project that explores how the shell executes commands connected by pipes (|).
+
+The goal is to recreate this behavior in C by using system calls such as fork, pipe, dup2, and execve. Through this project, I learned how processes communicate using file descriptors and how the shell locates and executes commands using environment variables like PATH.
+
+Pipex provides a deeper understanding of Unix process management and exposes a different side of C programming that interacts directly with the operating system.
+
 ### Target
 
-The output of the program should be the same as when you use:
+The output of the program should be the same as when you run the following command in the shell:
 
 ```
 < infile ls -l | wc -l > outfile
 ```
 
-Call the program after doing "make" as follows:
+Call the program after running make as follows:
 
 ```
-/pipex file1 cmd1 cmd2 file2
+./pipex file1 cmd1 cmd2 file2
 ```
 
-### Extranal Functions
+### External Functions
 
 First encounters with these functions
 
@@ -42,20 +48,71 @@ First encounters with these functions
 | ITEM | DESCRIPTION | LIBRARY |
 | :--- | :--- | :-- |
 | STDIN_FILENO | a standard symbolice constant that signifies standard input or 0 | <unistd.h> |
-| STDOUT_FILENE | a symbolic constant that signifies standard output or 1 | <unistd.h>|
+| STDOUT_FILENO | a symbolic constant that signifies standard output or 1 | <unistd.h>|
+
+### Concepts Learned
+
+- Process creation with fork()
+- Interprocess communication using pipe()
+- File descriptor manipulation with dup2()
+- Executing programs using execve()
+- Parsing environment variables (PATH)
+- Handling input/output redirection
 
 # Instruction
 
-Compile the program using make, you will have an executable program:
+Compile the program using ```make```. This will generate an executable:
 ```
 ./pipex
 ```
+Run the program using:
+```
+./pipex infile cmd1 cmd2 outfile
+```
+Check ```outfile``` for the output.
+if there is no ```outfile```, the program will create it. 
 
+Notes:
+- Make sure ```infile``` contains data.
+- Existing data in ```outfile``` will be truncated when the program runs.
 
 # Resources
 
-
+- Man Pages: ```fork```, ```dup```, ```dup2```, ```wait```, ```waitpid```, ```access```, ```pipe```, ```execve```.
+- YouTube tutorials about ```fork```, ```pipe```, and the ```exec``` family of functions
+- AI for further clarifcaiton of new functions and concepts. 
 
 # Notes
 
 These is a unfiltered and un edited write up of a developer as he progresses. 
+
+General Algorithim flow
+```javascript
+pipex infile cmd1 cmd2 outfile
+
+declare fd[2];
+create a pipe(fd); → check if success
+open infile → check if success
+open or create outfile → check if success
+get cmd_path for cmd1 & cmd2 → include success
+get cmd1_argv & cmd2_args → include success
+
+	Child 1: → include success
+	dup2(infile,STDIN_FILENO) → reads from infile then brings to pipe [0]
+	dup2(fd[1],STDOUT_FILENO) → sets pipe[1] for output
+	closed unused fds
+	execute execve(cmd_path,argv,envp);
+
+	Child 2: → include success
+	dup2(fd[0],STDIN_FILENO) →takes output of Child 1 as input
+	dup2(outfile,STDOUT_FILENO) → makes “outfile” the location of the output 
+	closed unused fds
+	execute execve(cmd_path,argv,envp);
+
+close(fd[0]);
+close(fd[1]);
+close(infile);
+close(outfile);
+waitpid(child1,NULL,0);
+waitpid(child2,NULL,0);
+```
