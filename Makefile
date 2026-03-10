@@ -24,8 +24,8 @@ INCDIR		= includes
 INCFLAGS	= -I$(INCDIR) -I$(LIBDIR)/includes
 
 SRCS		= main.c \
-				src_pipex/pipex_utls_1.c \
-				src_pipex/pipex_utls_2.c
+				src/pipex_utls_1.c \
+				src/pipex_utls_2.c
 OBJS		= $(SRCS:.c=.o)
 
 #Commands
