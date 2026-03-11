@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_utls_2.c                                     :+:      :+:    :+:   */
+/*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/09 13:53:59 by mvelasqu          #+#    #+#             */
-/*   Updated: 2026/03/09 14:00:01 by mvelasqu         ###   ########.fr       */
+/*   Created: 2026/03/11 11:55:42 by mvelasqu          #+#    #+#             */
+/*   Updated: 2026/03/11 13:04:11 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ char	*get_exec_path(char *cmd, char **envp)
 			return (ft_strdup(cmd));
 		return (NULL);
 	}
+	
 	path = get_path(envp);
 	if (!path)
 		return (NULL);

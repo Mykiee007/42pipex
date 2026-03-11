@@ -6,7 +6,7 @@
 #    By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/11 16:03:18 by mvelasqu          #+#    #+#              #
-#    Updated: 2026/03/09 13:57:53 by mvelasqu         ###   ########.fr        #
+#    Updated: 2026/03/11 12:27:09 by mvelasqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,10 @@ INCDIR		= includes
 INCFLAGS	= -I$(INCDIR) -I$(LIBDIR)/includes
 
 SRCS		= main.c \
-				src_pipex/pipex_utls_1.c \
-				src_pipex/pipex_utls_2.c
+				src/helper.c \
+				src/initialize.c \
+				src/path.c \
+				src/child.c
 OBJS		= $(SRCS:.c=.o)
 
 #Commands
@@ -49,6 +51,6 @@ fclean:
 	$(MAKE) -C $(LIBDIR) fclean
 
 re:
-	fclean all
+	$(MAKE) fclean all
 
 phony: all fclean clean re

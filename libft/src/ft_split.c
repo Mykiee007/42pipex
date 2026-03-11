@@ -6,7 +6,7 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 12:08:43 by mvelasqu          #+#    #+#             */
-/*   Updated: 2025/12/02 16:57:09 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/03/11 13:25:00 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,17 @@ char	**ft_split(char	const *s, char c)
 	size_t	w_index;
 	char	**arr;
 
-	if (s == NULL)
+	if (!s)
 		return (NULL);
 	w_index = ft_wordcount(s, c);
 	arr = (char **)malloc((w_index + 1) * sizeof(char *));
 	if (arr == NULL)
 		return (NULL);
 	if (!ft_putword(arr, s, c, w_index))
+	{
+		ft_free_split(arr);
 		return (NULL);
+	}
 	arr[w_index] = NULL;
 	return (arr);
 }

@@ -6,7 +6,7 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:00:39 by mvelasqu          #+#    #+#             */
-/*   Updated: 2026/03/09 13:58:57 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/03/11 13:11:45 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,17 @@ typedef struct s_pipex
 	char	*exec_path2;
 }	t_pipex;
 
+void	ft_print_split(char **split);
 char	*get_path(char **envp);
 char	*find_in_path(char **paths, char *cmd);
 char	*ft_join3(char *str1, char*str2, char *str3);
 char	*find_in_path(char **paths, char *cmd);
 char	*get_exec_path(char *cmd, char **envp);
+int		init_files(t_pipex *px, char **argv);
+int		init_cmds(t_pipex *px, char **argv, char **envp);
+void	child1(t_pipex *px, char **envp);
+void	child2(t_pipex *px, char **envp);
+void	ft_input_error(t_pipex *px, int argc, char **argv);
 void	close_all(t_pipex *px);
 int		main(int argc, char **argv, char **envp);
 

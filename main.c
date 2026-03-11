@@ -6,70 +6,24 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 16:10:09 by mvelasqu          #+#    #+#             */
-/*   Updated: 2026/03/09 13:56:57 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/03/11 13:28:54 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-static int	init_files(t_pipex *px, char **argv)
-{
-	px->infile = open(argv[1], O_RDONLY);
-	if (px->infile < 0)
-		return (-1);
-	px->outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (px->outfile < 0)
-		return (-1);
-	return (0);
-}
-
-static int	init_cmds(t_pipex *px, char **argv, char **envp)
-{
-	px->cmd1_args = ft_split(argv[2], ' ');
-	px->cmd2_args = ft_split(argv[3], ' ');
-	if (!px->cmd1_args || !px->cmd2_args)
-		return (-1);
-	px->exec_path1 = get_exec_path(px->cmd1_args[0], envp);
-	px->exec_path2 = get_exec_path(px->cmd2_args[0], envp);
-	if (!px->exec_path1 || !px->exec_path2)
-		return (-1);
-	return (0);
-}
-
-static void	child1(t_pipex *px, char **envp)
-{
-	dup2(px->infile, STDIN_FILENO);
-	dup2(px->fd[1], STDOUT_FILENO);
-	close(px->fd[0]);
-	close(px->fd[1]);
-	close(px->infile);
-	close(px->outfile);
-	execve(px->exec_path1, px->cmd1_args, envp);
-}
-
-static void	child2(t_pipex *px, char **envp)
-{
-	dup2(px->fd[0], STDIN_FILENO);
-	dup2(px->outfile, STDOUT_FILENO);
-	close(px->fd[0]);
-	close(px->fd[1]);
-	close(px->infile);
-	close(px->outfile);
-	execve(px->exec_path2, px->cmd2_args, envp);
-}
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	px;
 
 	if (argc != 5)
-		return (1);
-	if (pipe(px.fd) == -1)
-		return (1);
+		return (ft_input_error(&px, argc, argv), 1);
 	if (init_files(&px, argv) == -1)
-		return (1);
+		return (ft_input_error(&px, argc, argv), 1);
 	if (init_cmds(&px, argv, envp) == -1)
-		return (1);
+		return (ft_input_error(&px, argc, argv), 1);
+	if (pipe(px.fd) == -1)
+		return (ft_input_error(&px, argc, argv), 1);
 	px.pid1 = fork();
 	if (px.pid1 == 0)
 		child1(&px, envp);
