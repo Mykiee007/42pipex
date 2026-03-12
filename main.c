@@ -6,7 +6,7 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 16:10:09 by mvelasqu          #+#    #+#             */
-/*   Updated: 2026/03/11 13:28:54 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/03/12 12:28:20 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **envp)
 	if (init_cmds(&px, argv, envp) == -1)
 		return (ft_input_error(&px, argc, argv), 1);
 	if (pipe(px.fd) == -1)
-		return (ft_input_error(&px, argc, argv), 1);
+		return (close_all(&px),ft_input_error(&px, argc, argv), 1);
 	px.pid1 = fork();
 	if (px.pid1 == 0)
 		child1(&px, envp);

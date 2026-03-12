@@ -6,7 +6,7 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 11:55:42 by mvelasqu          #+#    #+#             */
-/*   Updated: 2026/03/11 13:04:11 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/03/12 12:46:22 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ char	*get_exec_path(char *cmd, char **envp)
 			return (ft_strdup(cmd));
 		return (NULL);
 	}
-	
 	path = get_path(envp);
 	if (!path)
 		return (NULL);

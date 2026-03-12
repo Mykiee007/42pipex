@@ -1,14 +1,11 @@
-total 76
-drwxr-xr-x 6 mvelasqu 2025_singapore   166 Mar 11 12:45 .
-drwxr-xr-x 4 mvelasqu 2025_singapore    34 Feb 11 16:07 ..
-drwxr-xr-x 8 mvelasqu 2025_singapore  4096 Mar  9 14:52 .git
-drwxr-xr-x 2 mvelasqu 2025_singapore    21 Feb 19 09:41 includes
--rw-r--r-- 1 mvelasqu 2025_singapore     0 Mar 11 12:45 infile
-drwxr-xr-x 6 mvelasqu 2025_singapore   119 Mar 11 12:44 libft
--rw-r--r-- 1 mvelasqu 2025_singapore  5071 Mar 11 12:44 main.c
--rw-r--r-- 1 mvelasqu 2025_singapore  2360 Mar 11 12:44 main.o
--rw-r--r-- 1 mvelasqu 2025_singapore  1554 Mar 11 12:27 Makefile
--rwxr-xr-x 1 mvelasqu 2025_singapore 22240 Mar 11 12:44 pipex
--rw-r--r-- 1 mvelasqu 2025_singapore 20781 Mar  9 14:00 planning.ods
--rw-r--r-- 1 mvelasqu 2025_singapore  5767 Mar  9 14:47 README.md
-drwxr-xr-x 2 mvelasqu 2025_singapore   136 Mar 11 12:44 src
+includes
+infile
+libft
+main.c
+main.o
+Makefile
+outfile
+pipex
+planning.ods
+README.md
+src

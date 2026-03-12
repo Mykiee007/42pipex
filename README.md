@@ -26,22 +26,23 @@ Call the program after running make as follows:
 
 ### External Functions
 
+
 First encounters with these functions
 
-| NAME | PROTOTYPE | DESCRIPTION | LIBRARY |
-| :---: | :---: | :--- | :---: |
-| perror | void perror(const char *s) | Function designed to print a descriptive error message to the standard error stream (stderr).</br>Add errno.h for standard error printing | <stdio.h> | 
-| strerror | char *strerror(int errnum) | Function returns a string describing the meaning of an error code. Error code comes from errno | <string.h> |
-| access | int access(char const *path, int mode) | Function that determine whether the calling process has access to a specified file or directory | <unistd.h> |
-| dup | int dup(int filedes) | Duplicate a copy of a file descriptor | <unistd.h> |
-| dup2 | int dup(int filedes, int filedes2) | Same as dup, but instead of using the lowest-numbered unused file descriptor, it uses the descriptor number specified by the user | <unistd.h> |
-| exit | void exit(int status) | Function used to terminate/exit the calling process immediately. | <stdlib.h> |
-| fork | pid_t fork(void) | Create a child process. fork() splits one running program into two independent programs starting from the same line. On success: parents get positive number and child gets 0. On failure: negative number.  | <unistd.h> |
-| wait | pid_t wait(int *status) |The primary purpose is for the parent process to collect the exit status of its child processes and allow the system to release the resources associated with the child. | <sys/wait.h>|
-| waitpid | pid_t waitpid(pid_t pid, int *status, int options) |  wait for state changes in child of the calling process, and obtain information about the child whose state has changed.   If a child has already changed state, then these calls return immediately.  Otherwise, they block until either a child changes state or a signal handler interrupts the call  | <sys/wait.h> |
-| unlink | int unlink(const char *path) | The path to the file or symbolic link you want to remove | <unistd.h> |
-| pipe | int pipe(int pipefd[2]) | This connects two process. its a unidirectional data channel that can be used for interprocess communication.  The array pipefd is used to return two file descriptors referring to the ends of the pipe. pipefd[0] refers to the read end of the pipe.  pipefd[1] refers to the write end of the pipe.  Data written to the write end of the pipe is buffered by the kernel until it is read from the read end of the pipe. | <unistd.h> |
-| execve | int execve(const char *path/filename, char *const argv[], char *const envp[]) | this function loads a new program into a process memory. The exisiting process is discarded. The newly process gets all the new stak data & heap. since it replaces the process's memory, the return value is always -1. | <unistd.h> |
+| NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | PROTOTYPE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   | DESCRIPTION | SUCCESS&nbsp;&nbsp;&nbsp; | FAILURE&nbsp;&nbsp;&nbsp; | LIBRARY&nbsp;&nbsp;&nbsp;&nbsp;  |
+| :---: | :--- | :--- | :---: | :---: | :---: |
+| perror | void perror(const char *s) | Prints a descriptive error message to stderr based on the current value of errno. | void | void | <stdio.h> | 
+| strerror | char *strerror(int errnum) | Returns a string describing the error number given in errnum. | pointer to string | NULL | <string.h> |
+| access | int access(char const *path, int mode) | Checks if the process has permission to access a file or directory. | 0 | -1 | <unistd.h> |
+| dup | int dup(int filedes) | Creates a duplicate of a file descriptor. The new descriptor refers to the same open file description. | new fd | -1 | <unistd.h> |
+| dup2 | int dup(int filedes, int filedes2) | Duplicates oldfd into newfd. If newfd exists, it is closed first. | new fd | -1 | <unistd.h> |
+| exit | void exit(int status) | Function used to terminate/exit the calling process immediately. | no return | no return | <stdlib.h> |
+| fork | pid_t fork(void) | Creates a child process. Execution continues in both parent and child. | parent: Child PID, child: 0 | -1 | <unistd.h> |
+| wait | pid_t wait(int *status) | Suspends execution until one child process terminates. | child PID | -1 | <sys/wait.h>|
+| waitpid | pid_t waitpid(pid_t pid, int *status, int options) |  Waits for a specific child process to change state.  | child PID | -1 | <sys/wait.h> |
+| unlink | int unlink(const char *path) | The path to the file or symbolic link you want to remove.  | 0 | -1 | <unistd.h> |
+| pipe | int pipe(int pipefd[2]) | Creates a unidirectional communication channel between processes. pipefd[0] read end, pipefd[1] write end. | 0 | -1 | <unistd.h> |
+| execve | int execve(const char *path/filename, char *const argv[], char *const envp[]) | Replaces the current process with a new program. | no return | -1 | <unistd.h> |
 
 ### Other Notes
 
@@ -49,6 +50,8 @@ First encounters with these functions
 | :--- | :--- | :-- |
 | STDIN_FILENO | a standard symbolice constant that signifies standard input or 0 | <unistd.h> |
 | STDOUT_FILENO | a symbolic constant that signifies standard output or 1 | <unistd.h>|
+| 0 or EXIT_SUCCESS | in ``exit(int status)`` represents program has been successfully executed without encountering any error. |
+| 1 or EXIT_FAILURE | in ``exit(int status)`` represents program has encountered an error and could be executed successfully.
 
 ### Concepts Learned
 

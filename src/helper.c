@@ -6,7 +6,7 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 16:10:09 by mvelasqu          #+#    #+#             */
-/*   Updated: 2026/03/11 13:28:27 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/03/12 12:46:34 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,30 @@ char	*ft_join3(char *str1, char*str2, char *str3)
 	return (result);
 }
 
-void	ft_input_error(t_pipex *px ,int argc, char **argv)
+void	ft_input_error(t_pipex *px, int argc, char **argv)
 {
 	if (argc != 5)
 		ft_printf("Usage: %s infile cmd1 cmd2 outfile\n", argv[0]);
 	if (px->infile == -1)
-		ft_printf("Error opening infile: %s\n", strerror(errno));
+	{
+		perror("Error opening infile");
+		exit(1);
+	}
 	if (px->outfile == -1)
-		ft_printf("Error opening outfile: %s\n", strerror(errno));
+	{
+		perror("Error opening Outfile");
+		exit(1);
+	}
 	if (px->fd[0] == -1 || px->fd[1] == -1)
-		ft_printf("Error creating pipe: %s\n", strerror(errno));
+		perror("Error creating pipe");
 	if (!px->cmd1_args || !px->cmd1_args[0])
-		ft_printf("Error: cmd1_args is NULL\n");
+		perror("Error cmd1_args is NULL");
 	if (!px->cmd2_args || !px->cmd2_args[0])
-		ft_printf("Error: cmd2_args is NULL\n");
+		perror("Error cmd2_args is NULL");
 	if (px->exec_path1 == NULL)
-		ft_printf("Error: exec_path1 is NULL\n");
+		perror("Error exec_path1 is NULL");
 	if (px->exec_path2 == NULL)
-		ft_printf("Error: exec_path2 is NULL\n");
+		perror("Error exec_path2 is NULL");
 }
 
 void	close_all(t_pipex *px)
