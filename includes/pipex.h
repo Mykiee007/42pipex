@@ -44,9 +44,10 @@ char	*find_in_path(char **paths, char *cmd);
 char	*get_exec_path(char *cmd, char **envp);
 int		init_files(t_pipex *px, char **argv);
 int		init_cmds(t_pipex *px, char **argv, char **envp);
+int		init_cmd_args(t_pipex *px, char **argv);
 void	child1(t_pipex *px, char **envp);
 void	child2(t_pipex *px, char **envp);
-void	ft_input_error(t_pipex *px, int argc, char **argv);
+void	ft_input_error(t_pipex *px);
 void	close_all(t_pipex *px);
 int		main(int argc, char **argv, char **envp);
 

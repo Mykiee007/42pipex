@@ -1,11 +1,13 @@
+Makefile
+README.md
+be
+error.log
 includes
 infile
 libft
 main.c
 main.o
-Makefile
 outfile
 pipex
 planning.ods
-README.md
 src

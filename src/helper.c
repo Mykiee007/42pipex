@@ -31,30 +31,14 @@ char	*ft_join3(char *str1, char*str2, char *str3)
 	return (result);
 }
 
-void	ft_input_error(t_pipex *px, int argc, char **argv)
+void	ft_input_error(t_pipex *px)
 {
-	if (argc != 5)
-		ft_printf("Usage: %s infile cmd1 cmd2 outfile\n", argv[0]);
-	if (px->infile == -1)
-	{
-		perror("Error opening infile");
+	if (px->infile == -1 || px->outfile == -1)
 		exit(1);
-	}
-	if (px->outfile == -1)
-	{
-		perror("Error opening Outfile");
+	if (!px->cmd1_args || !px->cmd1_args[0] || !px->cmd2_args || !px->cmd2_args[0])
 		exit(1);
-	}
-	if (px->fd[0] == -1 || px->fd[1] == -1)
-		perror("Error creating pipe");
-	if (!px->cmd1_args || !px->cmd1_args[0])
-		perror("Error cmd1_args is NULL");
-	if (!px->cmd2_args || !px->cmd2_args[0])
-		perror("Error cmd2_args is NULL");
-	if (px->exec_path1 == NULL)
-		perror("Error exec_path1 is NULL");
-	if (px->exec_path2 == NULL)
-		perror("Error exec_path2 is NULL");
+	if (px->exec_path1 == NULL || px->exec_path2 == NULL)
+		exit (1);
 }
 
 void	close_all(t_pipex *px)
