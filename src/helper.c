@@ -12,6 +12,20 @@
 
 #include "pipex.h"
 
+void	init_px(t_pipex *px)
+{
+	px-> fd[0] = 0;
+	px-> fd[1] = 0;
+	px-> infile = 0;
+	px-> outfile = 0;
+	px-> pid1 = 0;
+	px-> pid2 = 0;
+	px-> cmd1_args = NULL;
+	px-> cmd2_args = NULL;
+	px-> exec_path1 = NULL;
+	px-> exec_path2 = NULL;
+}
+
 char	*ft_join3(char *str1, char*str2, char *str3)
 {
 	char	*tmp;
@@ -47,4 +61,12 @@ void	close_all(t_pipex *px)
 	close(px->fd[1]);
 	close(px->infile);
 	close(px->outfile);
+}
+
+void	free_all(t_pipex *px)
+{
+	ft_free_split (px->cmd1_args);
+	ft_free_split (px->cmd2_args);
+	free (px->exec_path1);
+	free (px-> exec_path2);
 }
