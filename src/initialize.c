@@ -32,11 +32,12 @@ int init_cmd_args(t_pipex *px, char **argv)
 	{
 		ft_putstr_fd(argv[2], 2);
 		ft_putstr_fd(": command not found\n", 2);
-		return (-1);
 	}
 	px->cmd2_args = ft_split(argv[3], ' ');
 	if (!px->cmd2_args || !px->cmd2_args[0])
 	{
+		ft_free_split(px-> cmd1_args);
+		ft_free_split(px-> cmd2_args);
 		ft_putstr_fd(argv[3], 2);
 		ft_putstr_fd(": command not found\n", 2);
 		return (-1);
@@ -57,10 +58,13 @@ int	init_cmds(t_pipex *px, char **argv, char **envp)
 	px->exec_path2 = get_exec_path(px->cmd2_args[0], envp);
 	if (!px->exec_path2)
 	{
+		ft_free_split(px->cmd1_args);
+		ft_free_split(px->cmd2_args);
+		free(px->exec_path1);
+		free(px->exec_path2);
 		ft_putstr_fd(px->cmd2_args[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
-	}
-	if (!px->exec_path1 || !px->exec_path2)
 		return (-1);
+	}
 	return (0);
 }

@@ -59,13 +59,13 @@ char	*get_exec_path(char *cmd, char **envp)
 		return (NULL);
 	}
 	path = get_path(envp);
+	if (!path)
+		return (NULL);
 	paths = ft_split(path, ':');
 	if (!paths)
 		return (NULL);
 	exec_path = find_in_path(paths, cmd);
-	if (access(exec_path, X_OK) == 0)
-			return (ft_free_split(paths), exec_path);
-	else
-		ft_free_split(paths);
-	return (NULL);
+	if (!exec_path)
+			return (ft_free_split(paths), NULL);
+	return (ft_free_split(paths), exec_path);
 }
