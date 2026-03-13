@@ -6,7 +6,7 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 16:10:09 by mvelasqu          #+#    #+#             */
-/*   Updated: 2026/03/13 10:02:46 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/03/13 14:59:33 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@ int	main(int argc, char **argv, char **envp)
 	if (px.pid2 == 0)
 		child2(&px, envp);
 	close_all(&px);
+	free(px.exec_path1);
+	free(px.exec_path2);
+	ft_free_split(px.cmd1_args);
+	ft_free_split(px.cmd2_args);
 	waitpid(px.pid1, NULL, 0);
 	waitpid(px.pid2, NULL, 0);
 	return (0);

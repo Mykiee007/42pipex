@@ -6,7 +6,7 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 12:08:43 by mvelasqu          #+#    #+#             */
-/*   Updated: 2026/03/11 13:25:00 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/03/13 14:50:27 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,106 +14,77 @@
 //#include <stdio.h>
 //#include <stdlib.h>
 
-static size_t	ft_wordcount(char const *s, char c)
+static int	ft_wordcount(char const *str, char c)
 {
-	size_t	w_count;
-	size_t	in_word;
-	size_t	i;
+	int	i;
+	int	word_count;
 
 	i = 0;
-	in_word = 0;
-	w_count = 0;
-	while (s[i] != '\0')
+	word_count = 0;
+	while (str[i])
 	{
-		if (s[i] != c && in_word == 0)
-		{
-			in_word = 1;
-			w_count++;
-		}
-		else if (s[i] == c)
-			in_word = 0;
-		i++;
-	}
-	return (w_count);
-}
-
-static char	*ft_getword(char const *s, size_t start, size_t end)
-{
-	size_t	len;
-	size_t	i;
-	char	*word;
-
-	len = end - start;
-	word = (char *)malloc((len + 1) * sizeof(char));
-	if (word == NULL)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		word[i] = s[start + i];
-		i++;
-	}
-	word[i] = '\0';
-	return (word);
-}
-
-static int	ft_cleardata(char **arr, size_t k)
-{
-	while (k > 0)
-	{
-		k--;
-		free(arr[k]);
-	}
-	free(arr);
-	return (0);
-}
-
-static int	ft_putword(char **arr, char const *src, char c, size_t w_index)
-{
-	size_t	i;
-	size_t	j;
-	size_t	k;
-
-	i = 0;
-	k = 0;
-	while (src[i] != '\0' && k < w_index)
-	{
-		if (src[i] != c)
-		{
-			j = i;
-			while (src[j] && src[j] != c)
-				j++;
-			arr[k] = ft_getword(src, i, j);
-			if (arr[k] == NULL)
-				return (ft_cleardata(arr, k));
-			i = j;
-			k++;
-		}
-		else
+		while (str[i] && str[i] == c)
+			i++;
+		if (str[i])
+			word_count++;
+		while (str[i] && str[i] != c)
 			i++;
 	}
-	return (1);
+	return (word_count);
 }
 
-char	**ft_split(char	const *s, char c)
+static void ft_get_word(char **result, char const *s, char c, int word_count)
 {
-	size_t	w_index;
-	char	**arr;
+	int i;
+	int j;
+	int w;
+	int k;
 
-	if (!s)
-		return (NULL);
-	w_index = ft_wordcount(s, c);
-	arr = (char **)malloc((w_index + 1) * sizeof(char *));
-	if (arr == NULL)
-		return (NULL);
-	if (!ft_putword(arr, s, c, w_index))
+	i = 0;
+	j = 0;
+	w = 0;
+	while (s[i] && w < word_count)
 	{
-		ft_free_split(arr);
-		return (NULL);
+		while(s[i] && s[i] == c)
+			i++;
+		if (!s[i])
+			break;
+		j = i;
+		while(s[j] && s[j] != c)
+			j++;
+		result[w] = (char *) malloc((j - i + 1) * sizeof(char));
+		if (!result[w])
+		{
+			ft_free_split(result);
+			return ;
+		}
+		k = 0;
+		while(i < j)
+		{
+			result[w][k] = s[i];
+			i++;
+			k++;
+		}
+		result[w][k] = '\0';
+		w++;
+		i = j;
 	}
-	arr[w_index] = NULL;
-	return (arr);
 }
+
+char	**ft_split(char const *s, char c)
+{
+	char	**result;
+	int		w;
+	
+	w = ft_wordcount(s, c);
+	result = (char **)malloc( (w + 1) * sizeof(char *));
+	if (!result)
+		return (NULL);
+	ft_get_word(result, s, c, w);
+	result[w] = NULL;
+	return (result);
+}
+
 /*int	main(void)
 {
 	char arr[] = "Hello+World+Nice+To+Meet+You";

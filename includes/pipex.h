@@ -6,7 +6,7 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:00:39 by mvelasqu          #+#    #+#             */
-/*   Updated: 2026/03/11 13:11:45 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/03/13 10:40:49 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ typedef struct s_pipex
 	pid_t	pid2;
 	char	**cmd1_args;
 	char	**cmd2_args;
-	char	*path;
 	char	*exec_path1;
 	char	*exec_path2;
 }	t_pipex;
