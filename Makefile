@@ -6,7 +6,7 @@
 #    By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/11 16:03:18 by mvelasqu          #+#    #+#              #
-#    Updated: 2026/03/11 13:32:57 by mvelasqu         ###   ########.fr        #
+#    Updated: 2026/03/16 13:59:53 by mvelasqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ SRCS		= main.c \
 				src/helper.c \
 				src/initialize.c \
 				src/path.c \
-				src/child.c
+				src/child.c \
+				src/error.c
 OBJS		= $(SRCS:.c=.o)
 
 #Commands

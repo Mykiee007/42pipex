@@ -6,7 +6,7 @@
 /*   By: mvelasqu <mvelasqu@student.42singapore.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 16:00:39 by mvelasqu          #+#    #+#             */
-/*   Updated: 2026/03/11 13:11:45 by mvelasqu         ###   ########.fr       */
+/*   Updated: 2026/03/16 14:02:12 by mvelasqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 
 typedef struct s_pipex
 {
+	int		status;
 	int		fd[2];
 	int		infile;
 	int		outfile;
