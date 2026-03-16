@@ -31,11 +31,11 @@ typedef struct s_pipex
 	pid_t	pid2;
 	char	**cmd1_args;
 	char	**cmd2_args;
-	char	*path;
 	char	*exec_path1;
 	char	*exec_path2;
 }	t_pipex;
 
+void	init_px(t_pipex *px);
 void	ft_print_split(char **split);
 char	*get_path(char **envp);
 char	*find_in_path(char **paths, char *cmd);
@@ -49,6 +49,7 @@ void	child1(t_pipex *px, char **envp);
 void	child2(t_pipex *px, char **envp);
 void	ft_input_error(t_pipex *px);
 void	close_all(t_pipex *px);
+void	free_all(t_pipex *px);
 int		main(int argc, char **argv, char **envp);
 
 #endif

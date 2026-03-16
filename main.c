@@ -16,6 +16,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	px;
 
+	init_px (&px);
 	if (argc != 5)
 		return (ft_putstr_fd("Usage: ./pipex infile cmd1 cmd2 outfile\n", 2), 1);
 	if (init_files(&px, argv) == -1)
@@ -31,6 +32,7 @@ int	main(int argc, char **argv, char **envp)
 	if (px.pid2 == 0)
 		child2(&px, envp);
 	close_all(&px);
+	free_all(&px);
 	waitpid(px.pid1, NULL, 0);
 	waitpid(px.pid2, NULL, 0);
 	return (0);

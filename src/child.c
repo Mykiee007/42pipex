@@ -18,12 +18,14 @@ void	child1(t_pipex *px, char **envp)
 		|| dup2(px->fd[1], STDOUT_FILENO) == -1)
 	{
 		perror("Error dup2 in Child 1");
+		free_all(px);
 		close_all(px);
 		exit(EXIT_FAILURE);
 	}
 	close_all(px);
 	if (execve(px->exec_path1, px->cmd1_args, envp) == -1)
 	{
+		free_all(px);
 		perror("Error execve in Child 1");
 		exit(EXIT_FAILURE);
 	}
@@ -35,12 +37,14 @@ void	child2(t_pipex *px, char **envp)
 		|| dup2(px->outfile, STDOUT_FILENO) == -1)
 	{
 		perror("Error dup2 in Child 2");
+		free_all(px);
 		close_all(px);
 		exit(EXIT_FAILURE);
 	}
 	close_all(px);
 	if (execve(px->exec_path2, px->cmd2_args, envp) == -1)
 	{
+		free_all(px);
 		perror("Error execve in Child 2");
 		exit(EXIT_FAILURE);
 	}
